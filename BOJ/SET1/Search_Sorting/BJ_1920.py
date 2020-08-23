@@ -1,4 +1,4 @@
-# 이진탐색 알고리즘
+# 이진탐색 알고리즘(binary_search)
 # def binary_search(target, data):
 #     data.sort()
 #     start = 0
@@ -14,7 +14,7 @@
 #     return None
 
 
-# 재귀적 이진 탐색 알고리즘
+# 재귀적 이진 탐색 알고리즘(binary_search_recursion)
 def binary_search_recursion(target, start, end, data):
     if start > end:
         return None
