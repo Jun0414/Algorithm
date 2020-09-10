@@ -59,15 +59,22 @@
 
 # 병합 정렬
 def merge_sort(data):
+    # 리스트가 2개 미만일 경우 그대로 반환
     if len(data) < 2:
         return data
 
+    # 중간 지점 저장
     mid = len(data) // 2
+    # 중간지점을 기점으로 앞리스트와 뒤리스트 리스트 안의 인덱스가 하나가 될때까지 나누기(재귀적)
     low_data = merge_sort(data[:mid])
     high_data = merge_sort(data[mid:])
+    print("low = ",low_data)
+    print("high = ",high_data)
 
+    # 합칠 리스트 생성
     merged_data = []
     l = h = 0
+    # 각각 두 리스트의 마지막 인덱스까지 루프 돌기
     while l < len(low_data) and h < len(high_data):
         if low_data[l] < high_data[h]:
             merged_data.append(low_data[l])
