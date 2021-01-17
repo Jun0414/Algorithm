@@ -13,6 +13,7 @@
 # print(count)
 
 
+
 #####################################################################
 # # 실전문제 2 (큰 수의 법칙 p.92)
 # # 가장 큰 수와 두번째 큰 수만 활용
@@ -54,3 +55,55 @@
 #
 # print(sum)
 
+
+
+#####################################################################
+# # 실전문제 3 (숫자 카드 게임 p.96)
+#
+# n, m = map(int, input().split())
+#
+# # 내가 작성한 답안
+# # n행 만큼 행렬 만들기(공백으로 원소 구분)
+# data = [[int(x) for x in input().split()] for _ in range(n)]
+#
+# min_val = 0
+#
+# for index in range(n):
+#     if min_val < min(data[index]):
+#         min_val = min(data[index])
+#
+# print(min_val)
+#
+#
+# # 모범 답안
+# result = 0
+#
+# for i in range(n):
+#     data = list(map(int, input().split()))
+#
+#     min_val = min(data)
+#     result = max(result, min_val)
+#
+# print(result)
+
+
+
+#####################################################################
+# 실전문제 4 (1이 될 때까지 p.99)
+
+n, k = map(int, input().split())
+count = 0
+
+while True:
+    sub = n % k
+    count += sub
+    n -= sub
+
+    if n % k == 0:
+        n //= k
+        count += 1
+    if n < k:
+        count += (n - 1)
+        break
+
+print(count)
