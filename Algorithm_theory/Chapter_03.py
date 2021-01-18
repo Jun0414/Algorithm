@@ -62,6 +62,7 @@
 #
 # n, m = map(int, input().split())
 #
+#
 # # 내가 작성한 답안
 # # n행 만큼 행렬 만들기(공백으로 원소 구분)
 # data = [[int(x) for x in input().split()] for _ in range(n)]
