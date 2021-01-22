@@ -175,3 +175,160 @@ graph = [
 visited = [False] * 9
 
 bfs(graph, 1, visited)
+
+
+#####################################################################
+# 실전문제 3 (음료수 얼려 먹기 p.149)
+
+n, m = map(int, input().split())
+
+# 내가 작성한 답안
+
+ice_cream = 0
+
+graph = []
+# 연달아 쓴 숫자를 리스트로 바꿔주었기 때문에 알아서 한글자씩 잘라서 넣는다(split() 불필요)
+for i in range(n):
+    graph.append(list(map(int, input())))
+
+visited = [[0] * m for _ in range(n)]
+
+def dfs(graph, x, y, visited):
+    if x <= -1 or x >= n or y <= -1 or y >= m:
+        return False
+    if graph[x][y] == 0 and visited[x][y] == 0:
+        visited[x][y] = 1
+
+        dfs(graph, x - 1, y, visited)
+        dfs(graph, x, y - 1, visited)
+        dfs(graph, x + 1, y, visited)
+        dfs(graph, x, y + 1, visited)
+        return True
+
+    return False
+
+for i in range(n):
+    for j in range(m):
+        if graph[i][j] == 0 and visited[i][j] == 0:
+            if dfs(graph, i, j, visited) == True:
+                ice_cream += 1
+
+print(ice_cream)
+
+
+# 모범 답안
+
+graph = []
+for i in range(n):
+    graph.append(list(map(int, input())))
+
+def dfs(x, y):
+    # 종료 조건
+    if x <= -1 or x >= n or y <= -1 or y >= m:
+        return False
+
+    # 방문 안한 노드
+    if graph[x][y] == 0:
+        graph[x][y] = 1
+        # 상하좌우 재귀적 호출
+        dfs(x - 1, y)
+        dfs(x, y - 1)
+        dfs(x + 1, y)
+        dfs(x, y + 1)
+
+        return True
+
+    return False
+
+# 모든 노드에 을료수 채우기
+result = 0
+for i in range(n):
+    for j in range(m):
+        if dfs(i, j) == True:
+            result += 1
+
+print(result)
+
+
+# 입력 예시
+# 1)
+# 4 5
+# 00110
+# 00011
+# 11111
+# 00000
+# 2)
+# 15 14
+# 00000111100000
+# 11111101111110
+# 11011101101110
+# 11011101100000
+# 11011111111111
+# 11011111111100
+# 11000000011111
+# 01111111111111
+# 00000000011111
+# 01111111111000
+# 00011111111000
+# 00000001111000
+# 11111111110011
+# 11100011111111
+# 11100011111111
+
+
+#####################################################################
+# 실전문제 4 (미로 탈출 p.152)
+from collections import deque
+
+n, m = map(int, input().split())
+
+graph = []
+for i in range(n):
+    graph.append(list(map(int, input())))
+
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+
+
+def bfs(x, y):
+    queue = deque()
+    queue.append((x, y))
+
+    # 큐가 빌때까지
+    while queue:
+        x, y = queue.popleft()
+
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+
+            # 그래프를 벗어난 경우
+            if nx < 0 or ny < 0 or nx >= n or ny >= m:
+                continue
+            # 괴물이 있는 경우
+            if graph[nx][ny] == 0:
+                continue
+
+            # 1인 경우에만 최단거리 추가(먼저 나온 것 부터 큐에 담기므로 중복으로 방문하더라도 처음 방문이 가장 빠르게 도착한 것)
+            if graph[nx][ny] == 1:
+                graph[nx][ny] = graph[x][y] + 1
+                queue.append((nx, ny))
+
+    return graph[n - 1][m - 1]
+
+
+print(bfs(0, 0))
+
+# 입력 예시
+# 1)
+# 3 3
+# 110
+# 010
+# 011
+# 2)
+# 5 6
+# 101010
+# 111111
+# 000001
+# 111111
+# 111111
