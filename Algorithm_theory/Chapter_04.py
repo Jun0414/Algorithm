@@ -44,6 +44,10 @@ for plan in plans:
 
 print(x, y)
 
+# 입력 예시
+# 5
+# R R R U D D
+
 
 
 #####################################################################
@@ -84,6 +88,9 @@ for i in range(n + 1):
                 cnt += 1
 
 print(cnt)
+
+# 입력 예시
+# 5
 
 
 
@@ -136,6 +143,9 @@ for step in steps:
         cnt += 1
 
 print(cnt)
+
+# 입력 예시
+# a1
 
 
 
@@ -245,3 +255,11 @@ while True:
         turn_time = 0
 
 print(cnt)
+
+# 입력 예시
+# 4 4
+# 1 1 0
+# 1 1 1 1
+# 1 0 0 1
+# 1 1 0 1
+# 1 1 1 1
