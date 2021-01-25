@@ -85,3 +85,70 @@ def quick_sort_py(array):
     return quick_sort_py(left_side) + [pivot] + quick_sort_py(right_side)
 
 print(quick_sort_py(array))
+
+
+
+#####################################################################
+# 예제 6-6 (계수정렬 p.174)
+
+# 모든 원소의 값이 0보다 크거나 같은 조건
+array = [7, 5, 9, 0, 3, 1, 6, 2, 9, 1, 4, 8, 0, 5, 2]
+
+# 모든 범위를 포함하는 리스트 생성
+count = [0] * (max(array) + 1)
+
+for i in range(len(array)):
+    # 각 데이터에 해당하는 인덱스의 값 증가
+    count[array[i]] += 1
+
+# count 개수 만큼 데이터 출력
+for i in range(len(count)):
+    for j in range(count[i]):
+        print(i, end=' ')
+
+
+
+#####################################################################
+# 예제 6-7 (파이썬 정렬 라이브러리 p.176)
+
+array = [7, 5, 9, 0, 3, 1, 6, 2, 4, 8]
+
+# sorted() 반환 결과는 리스트
+result = sorted(array)
+print(result)
+
+# sort() 반환 결과는 리스트 (별도의 리스트를 만들지 않고 내부에서 정렬)
+array.sort()
+print(array)
+
+# key값을 활용한 정렬 (setting에서 반환하는 인덱스 값이 key로 설정됨)
+array = [('바나나', 2), ('사과', 5), ('당근', 3)]
+
+def setting(data):
+    return data[1]
+
+result = sorted(array, key=setting)
+print(result)
+
+
+
+#####################################################################
+# 실전문제 2 (위에서 아래로 p.178)
+
+n = int(input())
+
+data = []
+for i in range(n):
+    data.append(int(input()))
+
+data.sort(reverse=True)
+
+for i in data:
+    print(i, end=' ')
+
+# 입력 예시
+# 3
+# 15
+# 27
+# 12
+
