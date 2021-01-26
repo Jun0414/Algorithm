@@ -152,3 +152,88 @@ for i in data:
 # 27
 # 12
 
+
+
+#####################################################################
+# 실전문제 3 (성적이 낮은 순서로 학생 출력하기 p.180)
+
+n = int(input())
+
+data = []
+for i in range(n):
+    input_data = input().split()
+
+    # dictionary처럼 쓰기위해서 append()안에 ()를 만들어 거기에 리스트처럼 넣어주는 구조
+    data.append((input_data[0], int(input_data[1])))
+
+def setting(data):
+    return data[1]
+
+# setting의 설정을 이용한 표현
+data = sorted(data, key=setting)
+
+# 람다로 표현
+data = sorted(data, key=lambda score: score[1])
+
+# 이름만 출력
+for student in data:
+    print(student[0], end=' ')
+
+# 입력 예시
+# 2
+# 홍길동 95
+# 이순신 77
+
+
+
+#####################################################################
+# 실전문제 4 (두 배열의 원소 교체 p.182)
+
+n, k = map(int, input().split())
+
+A = list(map(int, input().split()))
+B = list(map(int, input().split()))
+
+# 내가 작성한 답안
+
+# 계수정렬 함수
+def count_sort(data):
+    array = [0] * (max(data) + 1)
+    p = 0
+
+    for i in range(len(data)):
+        array[data[i]] += 1
+
+    for i in range(len(array)):
+        for j in range(array[i]):
+            data[p] = i
+            p += 1
+
+count_sort(A)
+count_sort(B)
+
+# A는 앞에서부터 B는 뒤에서부터 교체
+for i in range(k):
+    if A[i] < B[n - i - 1]:
+        A[i], B[n - i - 1] = B[n - i - 1], A[i]
+
+print(sum(A))
+
+
+# 모범 답안
+
+A.sort()
+B.sort(reverse=True)
+
+for i in range(k):
+    if A[i] < B[i]:
+        A[i], B[i] = B[i], A[i]
+    else:
+        break
+
+print(sum(A))
+
+# 입력 예시
+# 5 3
+# 1 2 5 4 3
+# 5 5 6 6 5
