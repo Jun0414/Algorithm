@@ -70,3 +70,223 @@ else:
 
 
 
+#####################################################################
+# 이진탐색 트리 구현
+
+# 노드 생성
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+# 재귀적 구현
+class RecursiveBinarySearchTree(Node):
+    def __init__(self, root):
+        self.root = root
+    # 노드 삽입
+    def insert(self, data):
+        self.root = self._insert_value(self.root, data)
+
+        return self.root is not None
+
+    def _insert_value(self, node, data):
+        if node is None:
+            node = Node(data)
+        else:
+            if data <= node.data:
+                node.left = self._insert_value(node.left, data)
+            else:
+                node.right = self._insert_value(node.right, data)
+
+        return node
+
+    # 노드 탐색
+    def find(self, key):
+        return self._find_value(self.root, key)
+
+    def _find_value(self, root, key):
+        if root is None or root.data == key:
+            return root is not None
+        elif key < root.data:
+            return self._find_value(root.left, key)
+        else:
+            return self._find_value(root.right, key)
+
+    def delete(self, key):
+        self.root, deleted = self._delete_value(self.root, key)
+
+        return deleted
+
+    def _delete_value(self, node, key):
+        if node is None:
+            return node, False
+
+        deleted = False
+
+        # 해당 노드가 삭제할 노드일 경우
+        if key == node.data:
+            deleted = True
+
+            # 삭제할 노드가 자식이 2개일 경우
+            if node.left and node.right:
+                # 오른쪽 서브 트리에서 가장 왼쪽에 있는 노드를 찾아서 교체
+                parent, child = node, node.right
+
+                while child.left is not None:
+                    parent, child = child, child.left
+
+                child.left = node.left
+
+                if parent != node:
+                    parent.left = child.right
+                    child.right = node.right
+
+                node = child
+
+            # 자식 노드가 1개일 경우 해당 노드와 교체
+            elif node.left or node.right:
+                node = node.left or node.right
+            # 자식노드가 없을 경우 그냥 삭제
+            else:
+                node = None
+        elif key < node.data:
+            node.left, deleted = self._delete_value(node.left, key)
+        else:
+            node.right, deleted = self._delete_value(node.right, key)
+
+        return node, deleted
+
+# 이진탐색 트리에 삽입, 삭제 및 출력
+arr = [5, 2, 4, 22, 10, 12, 15, 60, 44, 9]
+root = Node(30)
+bst = RecursiveBinarySearchTree(root)
+for i in arr:
+    bst.insert(i)
+
+print(bst.find(22)) # True
+print(bst.find(61)) # False
+print(bst.find(60)) # True
+print(bst.delete(60)) # True
+print(bst.find(60)) # False
+print(bst.delete(22)) # True
+print(bst.delete(44)) # True
+print(bst.find(22)) # False
+print(bst.find(44)) # False
+
+
+# 단순 구현
+class BinarySearchTree(Node):
+    def __init__(self, root):
+        self.root = root
+
+    # 노드 삽입
+    def insert(self, value):
+        self.current_node = self.root
+        while True:
+            if value < self.current_node.value:
+                if self.current_node.left != None:
+                    self.current_node = self.current_node.left
+                else:
+                    self.current_node.left = Node(value)
+                    break
+            else:
+                if self.current_node.right != None:
+                    self.current_node = self.current_node.right
+                else:
+                    self.current_node.right = Node(value)
+                    break
+
+    # 노드 탐색
+    def find(self, value):
+        self.current_node = self.root
+        while self.current_node:
+            if self.current_node.value == value:
+                return True
+            elif self.current_node.value > value:
+                self.current_node = self.current_node.left
+            else:
+                self.current_node = self.current_node.right
+        return False
+
+    # 노드 삭제
+    def delete(self, value):
+        # 삭제할 노드가 있는지 검사하고 없으면 False리턴
+        # 검사를 한 후에는 삭제할 노드가 current_node, 삭제할 노드의 부모 노드가 parent가 된다.
+        is_search = False
+        self.current_node = self.root
+        self.parent = self.root
+        while self.current_node:
+            if self.current_node.value == value:
+                is_search = True
+                break
+            elif value < self.current_node.value:
+                self.parent = self.current_node
+                self.current_node = self.current_node.left
+            else:
+                self.parent = self.current_node
+                self.current_node = self.current_node.right
+        if is_search == False:
+            return False
+
+        # 삭제할 노드가 자식 노드를 갖고 있지 않을 때
+        if self.current_node.left == None and self.current_node.right == None:
+            if value < self.parent.value:
+                self.parent.left = None
+            else:
+                self.parent.right = None
+
+        # 삭제할 노드가 자식 노드를 한 개 가지고 있을 때(왼쪽 자식 노드)
+        if self.current_node.left != None and self.current_node.right == None:
+            if value < self.parent.value:
+                self.parent.left = self.current_node.left
+            else:
+                self.parent.right = self.current_node.left
+
+        # 삭제할 노드가 자식 노드를 한 개 가지고 있을 때(오른쪽 자식 노드)
+        if self.current_node.left == None and self.current_node.right != None:
+            if value < self.parent.value:
+                self.parent.left = self.current_node.right
+            else:
+                self.parent.right = self.current_node.right
+
+                # 삭제할 노드가 자식 노드를 두 개 가지고 있을 때
+        if self.current_node.left != None and self.current_node.right != None:
+            self.change_node = self.current_node.right
+            self.change_node_parent = self.current_node.right
+            while self.change_node.left != None:
+                self.change_node_parent = self.change_node
+                self.change_node = self.change_node.left
+            if self.change_node.right != None:
+                self.change_node_parent.left = self.change_node.right
+            else:
+                self.change_node_parent.left = None
+
+            if value < self.parent.value:
+                self.parent.left = self.change_node
+                self.change_node.right = self.current_node.right
+                self.change_node.left = self.current_node.left
+            else:
+                self.parent.right = self.change_node
+                self.change_node.left = self.current_node.left
+                self.change_node.right = self.current_node.right
+
+        return True
+
+# 이진탐색 트리에 삽입, 삭제 및 출력
+arr = [5, 2, 4, 22, 10, 12, 15, 60, 44, 9]
+root = Node(30)
+bst = BinarySearchTree(root)
+for i in arr:
+    bst.insert(i)
+
+print(bst.find(22)) # True
+print(bst.find(61)) # False
+print(bst.find(60)) # True
+print(bst.delete(60)) # True
+print(bst.find(60)) # False
+print(bst.delete(22)) # True
+print(bst.delete(44)) # True
+print(bst.find(22)) # False
+print(bst.find(44)) # False
+
