@@ -290,3 +290,116 @@ print(bst.delete(44)) # True
 print(bst.find(22)) # False
 print(bst.find(44)) # False
 
+
+
+#####################################################################
+# 예제 7-4 (빠르게 한 줄 입력받기 p.196)
+import sys
+
+input_data = sys.stdin.readline().rstrip()
+
+print(input_data)
+
+# 입력 예시
+# Hello, Coding Test!
+
+
+
+#####################################################################
+# 실전문제 2 (부품 찾기 p.197)
+
+# 이진 탐색
+n = int(input())
+data_N = list(map(int, input().split()))
+m = int(input())
+data_M = list(map(int, input().split()))
+
+data_N.sort()
+
+def binary_search(array, target, start, end):
+    while start <= end:
+        mid = (start + end) // 2
+
+        if array[mid] == target:
+            return mid
+        elif array[mid] > target:
+            end = mid - 1
+        else:
+            start = mid + 1
+    return None
+
+for i in data_M:
+    if binary_search(data_N, i, 0, n - 1) != None:
+        print('yes', end=' ')
+    else:
+        print('no', end=' ')
+
+
+# 계수 정렬
+n = int(input())
+array = [0] * 1000001
+
+# 가게에 있는 부품 카운트
+for i in input().split():
+    array[i] = 1
+
+m = int(input())
+data_M = list(map(int, input().split()))
+
+# 부품 존재여부 확인
+for i in data_M:
+    if array[i] == 1:
+        print('yes', end=' ')
+    else:
+        print('no', end=' ')
+
+
+# 집합 자료형(한번만 등장했는지를 판단할때는 유용하다)
+n = int(input())
+array = set(map(int, input().split()))
+m = int(input())
+data_M = list(map(int, input().split()))
+
+for i in data_M:
+    if i in array:
+        print('yes', end=' ')
+    else:
+        print('no', end=' ')
+
+# 입력 예시
+# 5
+# 8 3 7 9 2
+# 3
+# 5 7 9
+
+
+
+#####################################################################
+# 실전문제 3 (떡볶이 떡 만들기 p.201)
+
+n, m = map(int, input().split())
+rice_cake = list(map(int, input().split()))
+
+def binary_search(array, target, start, end):
+    while start <= end:
+        mid = (start + end) // 2
+        total = 0
+
+        for i in array:
+            if i > mid:
+                total += i - mid
+
+        if total == target:
+            return mid
+        elif total < target:
+            end = mid - 1
+        else:
+            enough = mid
+            start = mid + 1
+    return enough
+
+print(binary_search(rice_cake, m, 0, max(rice_cake)))
+
+# 입력 예시
+# 4 6
+# 19 15 10 17
