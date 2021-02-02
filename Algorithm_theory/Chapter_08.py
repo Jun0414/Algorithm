@@ -1,53 +1,53 @@
 
-# # 예제 8-1 (피보나치 함수 p.210)
-#
-# # 일반 재귀적 구현
-# def fibo(x):
-#     if x == 1 or x == 2:
-#         return 1
-#
-#     return fibo(x - 1) + fibo(x - 2)
-#
-# print(fibo(4))
-#
-#
-# # 다이나믹 프로그래밍(탑다운) 재귀적 구현
-#
-# # 한번 계산된 결과를 메모이제이션하기 위한 리스트 초기화
-# d = [0] * 100
-#
-# def d_fibo(x):
-#     # 호출함수 확인
-#     print('f(' + str(x) + ')', end=' ')
-#
-#     # 종료 조건
-#     if x == 1 or x == 2:
-#         return 1
-#     # 한번 계산했던 문제
-#     if d[x] != 0:
-#         return d[x]
-#
-#     # 처음 계산하는 문제
-#     d[x] = d_fibo(x - 1) + d_fibo(x - 2)
-#
-#     # 결과값 반환
-#     return d[x]
-#
-# print(d_fibo(99))
-#
-#
-# # 다이나믹 프로그래밍 반복적 구현
-# d = [0] * 100
-#
-# # 첫번째, 두번째는 1
-# d[1] = 1
-# d[2] = 1
-# n = 99
-#
-# for i in range(3, n + 1):
-#     d[i] = d[i - 1] + d[i - 2]
-#
-# print(d[n])
+# 예제 8-1 (피보나치 함수 p.210)
+
+# 일반 재귀적 구현
+def fibo(x):
+    if x == 1 or x == 2:
+        return 1
+
+    return fibo(x - 1) + fibo(x - 2)
+
+print(fibo(4))
+
+
+# 다이나믹 프로그래밍(탑다운) 재귀적 구현
+
+# 한번 계산된 결과를 메모이제이션하기 위한 리스트 초기화
+d = [0] * 100
+
+def d_fibo(x):
+    # 호출함수 확인
+    print('f(' + str(x) + ')', end=' ')
+
+    # 종료 조건
+    if x == 1 or x == 2:
+        return 1
+    # 한번 계산했던 문제
+    if d[x] != 0:
+        return d[x]
+
+    # 처음 계산하는 문제
+    d[x] = d_fibo(x - 1) + d_fibo(x - 2)
+
+    # 결과값 반환
+    return d[x]
+
+print(d_fibo(99))
+
+
+# 다이나믹 프로그래밍 반복적 구현
+d = [0] * 100
+
+# 첫번째, 두번째는 1
+d[1] = 1
+d[2] = 1
+n = 99
+
+for i in range(3, n + 1):
+    d[i] = d[i - 1] + d[i - 2]
+
+print(d[n])
 
 
 
@@ -143,3 +143,83 @@ print(get[n - 1])
 # 입력 예시
 # 4
 # 1 3 1 5
+
+
+
+#####################################################################
+# 실전문제 4 (바닥 공사 p.223)
+
+n = int(input())
+
+data = [0] * 1001
+
+data[1] = 1
+data[2] = 3
+
+for i in range(3, n + 1):
+    data[i] = data[i - 1] * (data[i - 2] * 2) % 796796
+
+print(data[n])
+
+# 입력 예시
+# 3
+
+
+
+#####################################################################
+# 실전문제 5 (효율적인 화폐 구성 p.226)
+import sys
+
+n, m = map(int, input().split())
+
+units = []
+for i in range(n):
+    units.append(int(input()))
+
+
+# 내가 작성한 답안
+
+# 메모이제이션 할 리스트
+data = [10001] * (m + 1)
+data[0] = 0
+
+for unit in units:
+    for i in range(1, m + 1):
+        if unit == i:
+            data[i] = 1
+
+        if i - unit > -1 and data[i - unit] != 10001:
+            data[i] = min(data[i], data[i - unit] + 1)
+
+if data[m] != 10001:
+    print(data[m])
+else:
+    print(-1)
+
+
+# 모범 답안
+
+data = [10001] * (m + 1)
+data[0] = 0
+
+# 다이나믹 프로그래밍 (버틈업)
+for i in range(n):
+    for j in range(units[i], m + 1):
+        if data[j - units[i]] != 10001:
+            data[j] = min(data[j], data[j - units[i]] + 1)
+
+if data[m] == 10001:
+    print(-1)
+else:
+    print(data[m])
+
+# 입력 예시
+# 1)
+# 2 15
+# 2
+# 3
+# 2)
+# 3 4
+# 3
+# 5
+# 7
