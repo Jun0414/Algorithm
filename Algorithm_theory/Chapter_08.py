@@ -170,6 +170,8 @@ print(data[n])
 # 실전문제 5 (효율적인 화폐 구성 p.226)
 import sys
 
+input = sys.stdin.readline
+
 n, m = map(int, input().split())
 
 units = []
